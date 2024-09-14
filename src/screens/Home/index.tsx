@@ -1,6 +1,6 @@
 import {
+  Alert,
   FlatList,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -17,15 +17,29 @@ export function Home() {
     "Biro",
     "Ana",
     "Isa",
-    "Jack"
+    "Jack",
   ];
 
   function handleParticipantAdd() {
-    console.log("Você clicou no botão de Adicionar!");
+    if (participants.includes("Rodrigo")) {
+      return Alert.alert(
+        "Participante existe",
+        "Já existe um participante na lista com esse nome."
+      );
+    }
   }
 
   function handleParticipantRemove(name: string) {
-    console.log(`Você clicou em remover o participante ${name}`);
+    Alert.alert("Remover", `Remover o participante ${name}?`, [
+      {
+        text: "Sim",
+        onPress: () => Alert.alert("Deletado!"),
+      },
+      {
+        text: "Não",
+        style: "cancel",
+      },
+    ]);
   }
 
   return (
@@ -46,20 +60,21 @@ export function Home() {
         </TouchableOpacity>
       </View>
 
-      <FlatList 
+      <FlatList
         data={participants}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <Participant 
-            key={item} 
-            name={item} 
-            onRemove={() => handleParticipantRemove("Rodrigo")} 
+          <Participant
+            key={item}
+            name={item}
+            onRemove={() => handleParticipantRemove(item)}
           />
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <Text style={styles.listEmptyText}>
-            Ninguém chegou no evento ainda? Adicione participantes a sua lista de presença.
+            Ninguém chegou no evento ainda? Adicione participantes a sua lista
+            de presença.
           </Text>
         )}
       />
